@@ -1,4 +1,3 @@
-import pprint
 import io
 import csv
 import hpstatus.status as status
@@ -9,7 +8,7 @@ FORMATS = [
 	"json"
 ]
 
-pp = pprint.PrettyPrinter(indent=4)
+# These keys are used as tags for each feature
 
 def get_report(feature, format, opts):
 	data = []
@@ -30,7 +29,7 @@ def get_report(feature, format, opts):
 	elif format == "csv":
 		value = _to_csv(data, opts["header"])
 	elif format == "json":
-		value = _to_json(data)
+        value = _to_json(data, opts["pretty"])
 	else:
 		raise ValueError("Invalid format passed")
 
@@ -43,15 +42,18 @@ def _to_csv(data, header=True, delimiter=","):
 	keys = list(data[0])
 
 	output = io.StringIO()
-	writer = csv.DictWriter(output, fieldnames=keys)
+    writer = csv.DictWriter(output, fieldnames=keys, delimiter=delimiter)
 
 	if header:
 		writer.writeheader()
 	
 	for row in data:
 		writer.writerow(row)
-	
-	return output.getvalue()
+    
+    return output.getvalue()
 
-def _to_json(data):
-	return ""
+def _to_json(data, pretty=False, indent=4):
+    if pretty:
+        return json.dumps(data, indent=indent)
+    else:
+        return json.dumps(data, separators=(",", ":"))
