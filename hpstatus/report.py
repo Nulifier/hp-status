@@ -1,5 +1,5 @@
 import hpstatus.status as status
-import hpstatus.format as format
+import hpstatus.format as fmt
 
 # These keys are used as tags for each feature
 TAGS = {
@@ -24,11 +24,11 @@ def get_report(feature, format, opts):
     
     value = ""
     if format == "line":
-        value = format.to_line(data, feature, TAGS[feature], opts["prefix"])
+        value = fmt.to_line(data, feature, TAGS[feature], opts["prefix"])
     elif format == "csv":
-        value = format.to_csv(data, opts["header"])
+        value = fmt.to_csv(data, opts["header"])
     elif format == "json":
-        value = format.to_json(data, opts["pretty"])
+        value = fmt.to_json(data, opts["pretty"])
     else:
         raise ValueError("Invalid format passed")
 
