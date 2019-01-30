@@ -14,4 +14,10 @@ parser.add_argument("--prefix", default="hp_", help="Prefix to prepend to the me
 
 args = parser.parse_args()
 
-status = get_report(args.feature, args.format, {"header": args.header, "pretty": args.pretty, "prefix": args.prefix})
+if args.feature == "all":
+    for feature in FEATURES:
+        status = get_report(feature, args.format, {"header": args.header, "pretty": args.pretty, "prefix": args.prefix})
+        print(status)
+else:
+    status = get_report(args.feature, args.format, {"header": args.header, "pretty": args.pretty, "prefix": args.prefix})
+    print(status)

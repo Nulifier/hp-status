@@ -2,6 +2,7 @@ import subprocess
 import re
 
 FEATURES = [
+    "all",
 	"fans",
 	"powermeter",
 	"powersupply",

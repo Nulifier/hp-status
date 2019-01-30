@@ -32,4 +32,4 @@ def get_report(feature, format, opts):
     else:
         raise ValueError("Invalid format passed")
 
-    print(value)
+    return value
