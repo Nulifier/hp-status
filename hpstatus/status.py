@@ -57,7 +57,7 @@ def _get_system_feature(feature):
         )
 
 def get_fans():
-    exp = re.compile("^#(?P<id>\d+)\s+(?P<location>\S+)\s+(?P<present>Yes|No)\s+(?P<speed>\S+)\s+(?P<percentage>\d+)%\s+(?P<redundant>Yes|No)\s+(?P<partner>\d+)\s+(?P<hot_pluggable>Yes|No)$", re.I | re.M)
+    exp = re.compile("^#(?P<id>\d+)\s+(?P<location>\S+)\s+(?P<present>Yes|No)\s+(?P<speed>\S+)\s+(?P<percentage>\d+)%\s+(?P<redundant>Yes|No)\s+(?P<partner>\d+)\s+(?P<hot_pluggable>Yes|No)", re.I | re.M)
     fans = []
     for match in re.finditer(exp, _get_system_feature("fans")):
         fans.append({
