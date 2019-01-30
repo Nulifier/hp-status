@@ -8,7 +8,7 @@ FEATURES = [
 ]
 
 def _get_system_feature(feature):
-    # return subprocess.check_output('hpasmcli -s "SHOW {}"'.format(feature.upper()))
+    return subprocess.check_output('hpasmcli -s "SHOW {}"'.format(feature.upper()))
     if feature == "fans":
         # return subprocess.check_output('hpasmcli -s "SHOW FANS"')
         return (
