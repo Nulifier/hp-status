@@ -52,7 +52,10 @@ def _to_line(data, feature, prefix=""):
         for tag in tags:
             row_tags.append("{}={}".format(tag, row[tag]))
 
-        row_values = ["{}={}".format(key, value) for key, value in row.items() if key not in tags]
+        row_values = []
+        for key, value in row.items():
+            if key not in tags:
+                row_values.append("{}={}".format(key, value))
 
         lines.append("{} {}".format(",".join(row_tags), ",".join(row_values)))
     return "\n".join(lines)
