@@ -54,16 +54,19 @@ def _get_storage_controllers():
     )
 
 def _get_storage_drives(slot):
-    return (
-        "   physicaldrive 1I:1:1 (port 1I:box 1:bay 1, 2 TB): OK\n"
-        "   physicaldrive 1I:1:2 (port 1I:box 1:bay 2, 2 TB): OK\n"
-        "   physicaldrive 1I:1:3 (port 1I:box 1:bay 3, 2 TB): OK\n"
-        "   physicaldrive 1I:1:4 (port 1I:box 1:bay 4, 2 TB): OK\n"
-        "   physicaldrive 2I:1:5 (port 2I:box 1:bay 5, 2 TB): OK\n"
-        "   physicaldrive 2I:1:6 (port 2I:box 1:bay 6, 2 TB): OK\n"
-        "   physicaldrive 2I:1:7 (port 2I:box 1:bay 7, 2 TB): Failed\n"
-        "   physicaldrive 2I:1:8 (port 2I:box 1:bay 8, 2 TB): OK"
-    )
+    if slot == 1:
+        return (
+            "   physicaldrive 1I:1:1 (port 1I:box 1:bay 1, 2 TB): OK\n"
+            "   physicaldrive 1I:1:2 (port 1I:box 1:bay 2, 2 TB): OK\n"
+            "   physicaldrive 1I:1:3 (port 1I:box 1:bay 3, 2 TB): OK\n"
+            "   physicaldrive 1I:1:4 (port 1I:box 1:bay 4, 2 TB): OK\n"
+            "   physicaldrive 2I:1:5 (port 2I:box 1:bay 5, 2 TB): OK\n"
+            "   physicaldrive 2I:1:6 (port 2I:box 1:bay 6, 2 TB): OK\n"
+            "   physicaldrive 2I:1:7 (port 2I:box 1:bay 7, 2 TB): Failed\n"
+            "   physicaldrive 2I:1:8 (port 2I:box 1:bay 8, 2 TB): OK"
+        )
+    else:
+        raise ValueError("Invalid slot, determine correct error message for mock")
 
 def _get_storage_drives_detail(slot):
     return """

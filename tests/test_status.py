@@ -4,7 +4,7 @@ from unittest import mock
 from tests import mocks
 from hpstatus import status
 
-class StatusTest(unittest.TestCase):
+class SystemTest(unittest.TestCase):
 	def test_FEATURES(self):
 		self.assertIsInstance(status.FEATURES, list)
 		self.assertIsInstance(status.FEATURES[0], str)
@@ -60,6 +60,51 @@ class StatusTest(unittest.TestCase):
 		self.assertIn("location", row)
 		self.assertIn("temp", row)
 		self.assertIn("threshold", row)
+
+class StorageTest(unittest.TestCase):
+	@mock.patch("hpstatus.status._get_storage_controllers", side_effect=mocks._get_storage_controllers)
+	def test_get_storage_controllers(self, mock_get_storage_controllers):
+		data = status.get_storage_controllers()
+		self.assertIsInstance(data, list)
+		self.assertNotEqual(len(data), 0)
+		row = data[0]
+		self.assertIsInstance(row, dict)
+		self.assertIn("id", row)
+		self.assertIn("model", row)
+		self.assertIn("status", row)
+		self.assertIn("cache", row)
+		self.assertIn("battery", row)
+
+	@mock.patch("hpstatus.status._get_storage_drives", side_effect=mocks._get_storage_drives)
+	def test_get_storage_drives(self, mock_get_storage_drives):
+		data = status.get_storage_drives(1)
+		self.assertIsInstance(data, list)
+		self.assertNotEqual(len(data), 0)
+		row = data[0]
+		self.assertIsInstance(row, dict)
+		self.assertIn("location", row)
+		self.assertIn("port", row)
+		self.assertIn("box", row)
+		self.assertIn("bay", row)
+		self.assertIn("size", row)
+		self.assertIn("status", row)
+	
+	@mock.patch("hpstatus.status._get_storage_drives_detail", side_effect=mocks._get_storage_drives_detail)
+	def test_get_storage_drives_detail(self, mock_get_storage_drives_detail):
+		data = status.get_storage_drives_detail(1)
+		self.assertIsInstance(data, list)
+		self.assertNotEqual(len(data), 0)
+		row = data[0]
+		self.assertIsInstance(row, dict)
+		self.assertIn("location", row)
+		self.assertIn("port", row)
+		self.assertIn("box", row)
+		self.assertIn("bay", row)
+		self.assertIn("size", row)
+		self.assertIn("status", row)
+		self.assertIn("serial", row)
+		self.assertIn("temp", row)
+		self.assertIn("max_temp", row)
 
 if __name__ == "__main__":
 	unittest.main()
