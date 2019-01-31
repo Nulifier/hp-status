@@ -12,7 +12,13 @@ def _get_system_feature(feature):
     return subprocess.check_output('/sbin/hpasmcli -s "SHOW {}"'.format(feature.upper()), shell=True).decode("utf-8")
 
 def _get_storage_controllers(feature):
-    return subprocess.check_output('/usr/sbin/ssacli ctrl all show status')
+    return subprocess.check_output("/usr/sbin/ssacli ctrl all show status", shell=True).decode("utf-8")
+
+def _get_storage_drives(slot):
+    return subprocess.check_output("/usr/sbin/ssacli ctrl slot={} physicaldrive all show status".format(slot), shell=True).decode("utf-8")
+
+def _get_storage_drives_detail(slot):
+    return subprocess.check_output("/usr/sbin/ssacli ctrl slot={} physicaldrive all show detail".format(slot), shell=True).decode("utf-8")
 
 def get_fans():
     exp = re.compile("^#(?P<id>\d+)\s+(?P<location>\S+)\s+(?P<present>Yes|No)\s+(?P<speed>\S+)\s+(?P<percentage>\d+)%\s+(?P<redundant>Yes|No)\s+(?P<partner>\d+)\s+(?P<hot_pluggable>Yes|No)", re.I | re.M)
