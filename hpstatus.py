@@ -1,7 +1,7 @@
 import argparse
 
 from hpstatus.report import get_report
-from hpstatus.status import FEATURES
+from hpstatus.report import FEATURES
 from hpstatus.format import FORMATS
 
 parser = argparse.ArgumentParser(description="Displays HP server status")

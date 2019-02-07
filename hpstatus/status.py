@@ -2,13 +2,6 @@ import subprocess
 import re
 from hpstatus import util
 
-FEATURES = [
-	"fans",
-	"powermeter",
-	"powersupply",
-	"temp"
-]
-
 def _get_system_feature(feature):
     return subprocess.check_output('/sbin/hpasmcli -s "SHOW {}"'.format(feature.upper()), shell=True).decode("utf-8")
 

@@ -5,10 +5,6 @@ from tests import mocks
 from hpstatus import status
 
 class SystemTest(unittest.TestCase):
-	def test_FEATURES(self):
-		self.assertIsInstance(status.FEATURES, list)
-		self.assertIsInstance(status.FEATURES[0], str)
-	
 	@mock.patch("hpstatus.status._get_system_feature", side_effect=mocks._get_system_feature)
 	def test_get_fans(self, mock_get_system_feature):
 		data = status.get_fans()
