@@ -18,7 +18,6 @@ class FormatTest(unittest.TestCase):
         '1,True,True,Ok,Supported,60.0',
         '2,True,True,Ok,Supported,60.0'
     ]
-    JSON_OUTPUT = '[{"id":1,"present":true,"redundant":true,"condition":"Ok","hotplug":"Supported","reading":60.0},{"id":2,"present":true,"redundant":true,"condition":"Ok","hotplug":"Supported","reading":60.0}]'
 
     def test_FORMATS(self):
         self.assertIsInstance(format.FORMATS, list)
@@ -50,7 +49,17 @@ class FormatTest(unittest.TestCase):
     
     def test_to_json(self):
         string = format.to_json(self.TEST_DATA)
-        self.assertEqual(string, self.JSON_OUTPUT)
+        # [
+        #   {"id":1,"present":true,"redundant":true,"condition":"Ok","hotplug":"Supported","reading":60.0},
+        #   {"id":2,"present":true,"redundant":true,"condition":"Ok","hotplug":"Supported","reading":60.0}
+        # ]
+        for i in range(2):
+            self.assertRegex(string, r'\[.*{.*\"id\": ?' + str(i+1) + r'.*?}.*\]')
+            self.assertRegex(string, r'\[.*{.*\"present\": ?true.*?}.*\]')
+            self.assertRegex(string, r'\[.*{.*\"redundant\": ?true.*?}.*\]')
+            self.assertRegex(string, r'\[.*{.*\"condition\": ?\"Ok\".*?}.*\]')
+            self.assertRegex(string, r'\[.*{.*\"hotplug\": ?\"Supported\".*?}.*\]')
+            self.assertRegex(string, r'\[.*{.*\"reading\": ?60\.0.*?}.*\]')
 
 if __name__ == "__main__":
     unittest.main()
