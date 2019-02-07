@@ -14,10 +14,6 @@ class FormatTest(unittest.TestCase):
         "id"
     ]
 
-    LINE_OUTPUT = [
-        'hp_powersupply,id=1i present=True,redundant=True,condition="Ok",hotplug="Supported",reading=60.0',
-        'hp_powersupply,id=2i present=True,redundant=True,condition="Ok",hotplug="Supported",reading=60.0'
-    ]
     CSV_OUTPUT = [
         '1,True,True,Ok,Supported,60.0',
         '2,True,True,Ok,Supported,60.0'
@@ -33,8 +29,16 @@ class FormatTest(unittest.TestCase):
         self.assertIsInstance(string, str)
         lines = string.splitlines()
         self.assertEqual(len(lines), 2)
-        self.assertEqual(lines[0], self.LINE_OUTPUT[0])
-        self.assertEqual(lines[1], self.LINE_OUTPUT[1])
+        # hp_powersupply,id=1i present=True,redundant=True,condition="Ok",hotplug="Supported",reading=60.0
+        # hp_powersupply,id=2i present=True,redundant=True,condition="Ok",hotplug="Supported",reading=60.0
+        for i in range(2):
+            self.assertRegex(lines[i], r"^hp_powersupply")
+            self.assertRegex(lines[i], r"^\S+id={}i".format(i+1))
+            self.assertRegex(lines[i], r"^\S+ \S*present=True")
+            self.assertRegex(lines[i], r"^\S+ \S*redundant=True")
+            self.assertRegex(lines[i], r'^\S+ \S*condition="Ok"')
+            self.assertRegex(lines[i], r'^\S+ \S*hotplug="Supported"')
+            self.assertRegex(lines[i], r"^\S+ \S*reading=60.0")
     
     def test_to_csv(self):
         string = format.to_csv(self.TEST_DATA, header=False)
