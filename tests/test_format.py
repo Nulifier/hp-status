@@ -14,10 +14,22 @@ class FormatTest(unittest.TestCase):
         "id"
     ]
 
-    CSV_OUTPUT = [
-        '1,True,True,Ok,Supported,60.0',
-        '2,True,True,Ok,Supported,60.0'
+    CSV_HEADERS = [
+        "id",
+        "present",
+        "redundant",
+        "condition",
+        "hotplug",
+        "reading"
     ]
+
+    CSV_VALUES = {
+        "present": "True",
+        "redundant": "True",
+        "condition": "Ok",
+        "hotplug": "Supported",
+        "reading": "60.0"
+    }
 
     def test_FORMATS(self):
         self.assertIsInstance(format.FORMATS, list)
@@ -40,12 +52,26 @@ class FormatTest(unittest.TestCase):
             self.assertRegex(lines[i], r"^\S+ \S*reading=60.0")
     
     def test_to_csv(self):
-        string = format.to_csv(self.TEST_DATA, header=False)
+        string = format.to_csv(self.TEST_DATA, header=True)
         self.assertIsInstance(string, str)
         lines = string.splitlines()
-        self.assertEqual(len(lines), 2)
-        self.assertEqual(lines[0], self.CSV_OUTPUT[0])
-        self.assertEqual(lines[1], self.CSV_OUTPUT[1])
+        # id,present,redundant,condition,hotplug,reading
+        # '1,True,True,Ok,Supported,60.0',
+        # '2,True,True,Ok,Supported,60.0'
+
+        self.assertEqual(len(lines), 3)
+        
+        # Determine that all the headers are present and record their indices
+        headers = lines[0].split(",")
+        header_index = {}
+        for header in self.CSV_HEADERS:
+            header_index[header] = headers.index(header)
+
+        for i in range(1, 2):
+            values = lines[i].split(",")
+            self.assertEqual(values[header_index["id"]], str(i))
+            for header, value in self.CSV_VALUES.items():
+                self.assertEqual(values[header_index[header]], value)
     
     def test_to_json(self):
         string = format.to_json(self.TEST_DATA)
