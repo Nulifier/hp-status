@@ -67,7 +67,7 @@ def get_temp():
     return temps
 
 def get_storage_controllers():
-    exp = re.compile(r"^(?P<model>.+) in Slot (?P<id>\d+).+Controller Status: (?P<status>\S+).+Cache Status: (?P<cache>\S+).+Battery/Capacitor Status: (?P<battery>\S+)", re.I | re.M | re.S)
+    exp = re.compile(r"^\s*(?P<model>.+) in Slot (?P<id>\d+).+Controller Status: (?P<status>\S+).+Cache Status: (?P<cache>\S+).+Battery/Capacitor Status: (?P<battery>\S+)", re.I | re.M | re.S)
     controllers = []
     for match in re.finditer(exp, _get_storage_controllers()):
         controllers.append({

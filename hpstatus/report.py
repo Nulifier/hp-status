@@ -5,7 +5,7 @@ FEATURES = [
     "fans",
 	"powermeter",
 	"powersupply",
-	"temp"
+	"temp",
     "storage"
 ]
 
@@ -13,8 +13,10 @@ FEATURES = [
 TAGS = {
     "fans": ["id", "location"],
     "powermeter": ["id"],
-	"powersupply": ["id"],
-	"temp": ["id", "location"]
+    "powersupply": ["id"],
+    "temp": ["id", "location"],
+    "storage_controller": ["id"],
+    "storage_drive": ["location", "port", "box", "bay"],
 }
 
 def _format_data(data, feature, format, opts):
@@ -35,12 +37,12 @@ def get_report(feature, format, opts):
     if feature == "storage":
         controllers = status.get_storage_controllers()
         controller_slots = [ctrl["id"] for ctrl in controllers]
-        text = _format_data(controllers, feature, format, opts)
+        text = _format_data(controllers, "storage_controller", format, opts)
 
         # Get the drives for each slot
         for slot in controller_slots:
             drives = status.get_storage_drives_detail(slot)
-            text += "\n" + _format_data(drives, feature, format, opts)
+            text += "\n" + _format_data(drives, "storage_drive", format, opts)
         
         return text
     else:
@@ -53,5 +55,5 @@ def get_report(feature, format, opts):
         elif feature == "temp":
             data = status.get_temp()
         else:
-            raise ValueError("Invalid feature passed")
+            raise ValueError("Invalid feature passed: '{}'".format(feature))
         return _format_data(data, feature, format, opts)
